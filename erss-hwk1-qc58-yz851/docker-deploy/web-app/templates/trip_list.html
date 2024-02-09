@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trip List</title>
+    <link rel="icon" href="/image/Duke_ECE.png" type="image/png" sizes="32x32">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        .right-bar {
+            margin-left: auto;
+        }
+
+        .log-in {
+            margin-right: 20px;
+        }
+
+        .bi {
+            margin-right: 0.3em;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .navbar {
+            height: 56px;
+        }
+
+        .trip-card {
+            border: 3px solid black;
+            border-radius: 25px;
+            padding-left: 2em;
+            max-width: 80%;
+            margin: 2.3em auto;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .trip-card:hover, .trip-card:focus-within {
+            transform: scale(1.03);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            color: black;
+        }
+        
+        .trip-time {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 0.4em;
+        }
+        .trip-info {
+            margin-left: 20px;
+            font-size: 1.2em;
+        }
+
+        .trip-status{
+            font-size: 1.2em;
+        }
+
+        .font-bold{
+            font-weight: bold;
+        }
+
+
+        .container{
+            margin-top: 5em;
+        }
+
+        .nav-username {
+            margin-right: 1.2em;
+        }
+        
+        .status-open {
+            background-color: #007bff; /* blue */
+            color: #ffffff;
+        }
+        
+        .status-confirmed {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        
+        .status-completed {
+            background-color: #28a745; /* green */
+            color: #ffffff;
+        }
+        
+        .nav-item a{
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Navigation bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand" href="{% url 'index' %}">Dr</a>
+                <ul class="navbar-nav me-9">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login_user' %}">Request Ride</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  active bg-white text-dark" href="{% url 'login_user' %}">Trip List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'join_share_trip' %}">Shared List</a>
+                    </li>
+                    <!-- more nav items -->
+                </ul>
+                <div class="right-bar d-flex align-items-center">
+                    <span class="navbar-text log-in d-inline-flex align-items-center">
+                        <i class="bi bi-person"></i>
+                        <a href="{% url 'index' %}" class="nav-link nav-username">{{ username }}</a>
+                        <a href="{% url 'index' %}" class="nav-link">Log out</a>
+                    </span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+        <div class="container">
+            <h2>My Trip List</h2>
+            {% for trip in trip_list %}
+                <a href="{% url 'edit_trip' trip.id %}" class="text-decoration-none" style="color: black">
+                <div class="trip-card">
+                    <div class="row">
+                        <div class="col-12 col-md-2 trip-time">
+                            {{ trip.arriving_date }}
+                            <div class="time-detail" style="text-align: left;">
+                                {{ trip.arriving_time }}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5 trip-info mt-3 mb-1">
+                            <span class="font-bold">From</span>
+                            <span>{{ trip.current_location }}</span>
+                            <span class="font-bold">To</span>
+                            <span>{{ trip.destination }}</span>
+                        </div>
+                    
+                        <div class="col-12 col-md-2 trip-status mt-3 mb-1">
+                            <span>{{ trip.total_passenger }} People</span>
+                        </div>
+
+                        <div class="col-12 col-md-2 trip-status mt-3 mb-1" style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                        <span class="{% if trip.status == 'open' %}status-open{% elif trip.status == 'confirmed' %}status-confirmed{% elif trip.status == 'completed' %}status-completed{% endif %}" style="padding: 0.3em 0.5em; border-radius: 10px">
+                            {{ trip.status }}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {% empty %}
+                <div>No trips available.</div>
+            {% endfor %}
+        </div>
+    
+
+    </main>
+    {#                    <img src="/image/duke_logo.png" class="img-fluid mx-auto d-block logo-style"#}
+    {#                         alt="Responsive image">#}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

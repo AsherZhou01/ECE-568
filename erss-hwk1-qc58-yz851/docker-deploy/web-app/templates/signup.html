@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signup</title>
+    <link rel="icon" href="../image/Duke_ECE.png" type="image/png" sizes="32x32">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .link-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* horizontally center */
+            margin-top: 15rem;
+        }
+
+        .link-container a {
+            text-decoration: none; /* 去掉下划线 */
+            color: black;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            font-size: 200%;
+        }
+
+        .link-container a::after {
+            content: ' \2192'; /* arrow icon */
+            display: inline-block;
+            margin-left: 2rem; /* margin between arrow and word */
+        }
+
+        .divider {
+            width: 80%;
+            height: 2px;
+            background-color: #ccc;
+            margin: 3rem 0; /* the margin upper and under the divider */
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'index' %}">Dr</a>
+        </div>
+    </nav>
+</header>
+<div class="link-container">
+    <a href="{% url 'signup_driver' %}" class="nav-link">Sign up to be our driver</a>
+    <div class="divider"></div>
+    <a href="{% url 'signup_user' %}" class="nav-link">Create a rider account</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

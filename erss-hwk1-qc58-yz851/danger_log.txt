@@ -1,0 +1,7 @@
+Danger Log
+
+We found that in our program, it is possible to log in two users at the same time on the same client. The later logon user will change the previous user's request.session.get value, which will cause some strange errors. For example, a user who is not a driver is recorded in the database as a driver of a ride.
+
+We used the CSRF mechanism when we submitted the form. The CSRF (Cross-Site Request Forgery) token is a defense mechanism used to protect websites from CSRF attacks. CSRF attacks take advantage of a user's login status to make malicious requests, such as performing unauthorized actions on a website they are logged on to without the user's knowledge. This is a good mechanism to protect the security of users.
+
+We also used get_object_or_404. It is a shortcut function in the Django framework that attempts to get an instance of a database model. If the query object exists, it returns the object; If it does not exist, an Http404 exception is thrown, causing a 404 page (that is, the "not found" error page) to be displayed. This can help us to solve the problem caused by the wrong URL, uniformly return a 404 page.

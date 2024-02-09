@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Driver</title>
+    <link rel="icon" href="/image/Duke_ECE.png" type="image/png" sizes="32x32">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        .right-bar {
+            margin-left: auto;
+        }
+
+        .log-in {
+            margin-right: 20px;
+        }
+
+        .bi {
+            margin-right: 0.3em;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .navbar {
+            height: 56px;
+        }
+
+        .index-section {
+            margin-top: 10rem;
+            margin-bottom: 3rem;
+            padding-left: 5rem;
+            padding-right: 5rem;
+
+        }
+        
+        .nav-username {
+            margin-right: 1.2em;
+        }
+        
+        .nav-item a{
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .trip-card {
+            border: 3px solid black;
+            border-radius: 25px;
+            padding-left: 2em;
+            max-width: 80%;
+            margin: 2.3em auto;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .trip-card:hover, .trip-card:focus-within {
+            transform: scale(1.03);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            color: black;
+        }
+        
+        .trip-time {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 0.4em;
+        }
+        .time-detail {
+            font-size: 0.9em;
+        }
+        .trip-info {
+            margin-left: 20px;
+            font-size: 1.2em;
+        }
+
+        .trip-status{
+            font-size: 1.2em;
+        }
+
+        .font-bold{
+            font-weight: bold;
+        }
+
+
+        .container{
+            margin-top: 5em;
+        }
+        
+        .status-open {
+            background-color: #007bff; /* blue */
+            color: #ffffff;
+        }
+        
+        .status-confirmed {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        
+        .status-completed {
+            background-color: #28a745; /* green */
+            color: #ffffff;
+        }
+        
+        .index-section {
+            display: flex; 
+            justify-content: center; 
+            align-items: start; /* 垂直对齐 */
+            margin-top: 7rem;
+            margin-bottom: 3rem;
+            gap: 30px;
+        }
+
+        .form-container {
+            flex-basis: 50%; /* 表单占据剩余空间的一半 */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+        }
+
+        .gap-form > .form-floating + .form-floating {
+            margin-bottom: 20px;
+        }
+
+        #current-location {
+            margin-bottom: 20px;
+        }
+
+        .form-check-input:checked {
+            background-color: #000;
+            border-color: #000;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            font-size: large;
+            {#margin-top: 1rem;#}
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+        
+        .nav-item a{
+            border-radius: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand" href="{% url 'index' %}">Dr</a>
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login_driver' %}">Available Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'request_ride_driver' %}">Request a Ride</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active bg-white text-dark" href="{% url 'driver_join_share_trip' %}">Join Share Rides</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my_rides' %}">My Rides</a>
+                </li>
+            </ul>
+            <div class="right-bar d-flex align-items-center">
+                <span class="navbar-text log-in d-inline-flex align-items-center">
+                    <i class="bi bi-person"></i>
+                    <a href="{% url 'index' %}" class="nav-link nav-username">{{ username }}</a>
+                    <a href="{% url 'index' %}" class="nav-link">Log out</a>
+                </span>
+            </div>
+        </div>
+    </nav>
+</header>
+
+    <main>
+    <section class="index-section container">
+        <div class="form-container col-md-8">
+            <h1>Order Detail</h1>
+            <form class="gap-form" method="POST" action="{% url 'driver_add_shared_passenger' trip.id%}">
+                {% csrf_token %}
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="current-location" name="current-location" value="{{ trip.current_location|default_if_none:'' }}" readonly>
+                    <label for="current-location">Current Location</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="destination-address" name="destination-address" value="{{ trip.destination|default_if_none:'' }}" readonly>
+                    <label for="destination-address">Destination Address</label>
+                </div>
+                <div class="form-floating">
+                    <input type="date" class="form-control form-control-lg datetime" id="departure-date"
+                           name="departure-date" value="{{ trip.arriving_date|date:'Y-m-d'|default_if_none:'' }}" readonly>
+                    <label for="departure-date">Required Date</label>
+                </div>
+                <div class="form-floating">
+                    <input type="time" class="form-control form-control-lg datetime" id="departure-time"
+                           name="departure-time" value="{{ trip.arriving_time|time:'H:i'|default_if_none:'' }}" readonly>
+                    <label for="departure-time">Required Time</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="total-passenger" name="total-passenger" value="{{ trip.total_passenger|default_if_none:'' }}" readonly>
+                    <label for="total-passenger">Total Passenger</label>
+                </div>
+                <div class="form-floating">
+                    <select class="form-select vType" id="vehicle-type" name="vehicle-type" disabled>
+                        {% for value, name in trip.VEHICLE_CHOICES %}
+                            <option value="{{ value }}" {% if value in trip.vehicle_type %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="vehicle-type">Vehicle Type (optional)</label>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <input type="hidden" name="trip_id" value="{{ trip.id }}">
+                    <button type="submit" class="btn btn-dark">
+                        {{ button_text }}
+                    </button>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="share-ride" name="share_ride" {% if trip.is_share %}checked{% endif %} readonly disabled>
+                        <label class="form-check-label" for="share-ride">
+                            is share allowed
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+</body>
+</html>

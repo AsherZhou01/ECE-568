@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="icon" href="../image/Duke_ECE.png" type="image/png" sizes="32x32">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .center-screen {
+            min-height: 100vh; /* 使容器至少与视口一样高 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 40%;
+        }
+
+        .login-button {
+            width: 17%;
+        }
+
+        .form-check-label {
+            margin-left: 10px;
+        }
+
+        .form-check-input:checked {
+            background-color: black !important;
+            border-color: black !important;
+        }
+
+        .form-style {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand" href="{% url 'index' %}">Dr</a>
+        </div>
+    </nav>
+</header>
+<div class="center-screen">
+    <h1>Duke Ride</h1>
+    <form class="form-style" method="POST" action="{% url 'check_log' %}">
+        {% csrf_token %}
+        <div class="login-box">
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="account-number" name="account-number">
+                <label for="account-number">Account Number</label>
+            </div>
+
+            <div class="form-floating mt-3 mb-3">
+                <input type="password" class="form-control" id="pwd" name="pwd">
+                <label for="pwd">Password</label>
+            </div>
+            <div class="form-check form-switch d-flex justify-content-end">
+                <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes">
+                <label class="form-check-label" for="mySwitch">I'm a driver</label>
+            </div>
+            <div class="d-flex justify-content-center">
+                {#                <button onclick="location.href='{% url 'login_user' %}'" class="btn btn-dark login-button">Log in#}
+                {#                </button>#}
+                <button class="btn btn-dark login-button">Log in
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Login Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- error message will be showed here -->
+                {{ message }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 确保页面加载完成后执行
+    document.addEventListener("DOMContentLoaded", function (event) {
+        {% if show_modal %}
+            let myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            myModal.show();
+        {% endif %}
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>
